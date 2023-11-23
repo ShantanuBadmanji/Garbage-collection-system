@@ -30,16 +30,16 @@ const getComplaintById = async (complaintId) => {
 
 const postComplaint = async (reqBody, next) => {
   const {
-    complaint: { type = null },
+    wasteType = null,
     beforeURIs,
-    Gps,
+    location,
     userId = null,
     complaintId,
   } = reqBody;
 
   const complaintQuery =
     "INSERT INTO COMPLAINT (id,user_id,type) values(?,?,?);";
-  await db.execute(complaintQuery, [complaintId, userId, type]);
+  await db.execute(complaintQuery, [complaintId, userId, wasteType]);
 
   const b4ImgQuery =
     "INSERT INTO BEFORE_IMAGE (id, complaint_id, url) values(?,?,?);";
@@ -51,7 +51,12 @@ const postComplaint = async (reqBody, next) => {
     }
   });
 
-  const { city = null, longitute = null, latitude = null } = Gps;
+  const {
+    city = null,
+    longitute = null,
+    latitude = null,
+    displayAddress = null,
+  } = location;
   const gpsQuery =
     "INSERT INTO GPS_LOCATION (complaint_id,city,longitude,latitude) values(?,?,?,?);";
   await db.execute(gpsQuery, [complaintId, city, longitute, latitude]);

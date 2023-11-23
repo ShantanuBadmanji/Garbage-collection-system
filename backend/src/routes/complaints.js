@@ -1,6 +1,11 @@
 import { Router } from "express";
 import crypto from "crypto";
-import { deleteComplaintById, getComplaintById, getComplaints, postComplaint } from "../db/query/complaint-query.js";
+import {
+  deleteComplaintById,
+  getComplaintById,
+  getComplaints,
+  postComplaint,
+} from "../db/query/complaint-query.js";
 
 const router = Router();
 
@@ -14,6 +19,8 @@ router.get("/", async (req, res, next) => {
   }
 });
 router.post("/", async (req, res, next) => {
+  console.log(req.body);
+  return res.json({ response: "response recieved" });
   try {
     const complaintId = crypto.randomUUID();
     await postComplaint({ ...req.body, complaintId }, next);
@@ -32,8 +39,8 @@ router.get("/:complaintId", async (req, res, next) => {
   const { complaintId } = req.params;
 
   try {
-    const [result] = await getComplaintById(complaintId);
-    res.status(200).json(result);
+    const [[resultedComplaint]] = await getComplaintById(complaintId);
+    res.status(200).json(resultedComplaint);
   } catch (error) {
     next(error);
   }

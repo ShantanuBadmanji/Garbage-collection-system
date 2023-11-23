@@ -5,7 +5,7 @@ import { isAuthenticated } from "../middleware/auth-middleware.js";
 
 const router = Router();
 
-router.all("/", isAuthenticated);
+// router.all("/", isAuthenticated);
 
 router.get("/", async (req, res, next) => {
   try {
@@ -20,8 +20,9 @@ router.get("/", async (req, res, next) => {
 router.get("/:userId", async (req, res, next) => {
   try {
     const { userId } = req.params;
-    const [result] = await getUserById(userId);
-    res.json(result);
+    const [[resultedUser]] = await getUserById(userId);
+    console.log("userById result: ", resultedUser);
+    res.json(resultedUser);
   } catch (error) {
     next(error);
   }
