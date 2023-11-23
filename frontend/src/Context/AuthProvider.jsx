@@ -1,6 +1,19 @@
+import { createContext, useState } from "react";
+
+const AuthContext = createContext();
+
 /* eslint-disable react/prop-types */
 function AuthProvider({ children }) {
-  return <div>{children}</div>;
+  const [authID, setAuthID] = useState(null);
+
+  const login = (userID) => setAuthID(userID);
+  const logout = () => setAuthID(null);
+
+  return (
+    <AuthContext.Provider value={{ authID, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
-export default AuthProvider;
+export { AuthContext, AuthProvider};
