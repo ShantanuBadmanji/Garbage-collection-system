@@ -14,9 +14,23 @@ export default function GoogleLoginSuccess() {
         );
         if (response.ok) {
           const { user } = await response.json();
-          login(user.id);
+          login(user);
           console.log("user: ", authID);
-          navigate("/users/dashboard");
+          switch (authID.role) {
+            case "user":
+              navigate(`/users/dashboard`);
+              break;
+            case "employee":
+              navigate("/employees/dashboard");
+              break;
+            case "admin":
+              navigate("/admins/dashboard");
+              break;
+
+            default:
+              navigate("/auth/login");
+              break;
+          }
         } else {
           navigate("/auth/login");
         }

@@ -13,7 +13,7 @@ function ProfileProvider({ children }) {
       setProfile(null);
       return;
     }
-    fetch(`${import.meta.env.VITE_BACKEND_API_URI}/users/${authID}`, {
+    fetch(`${import.meta.env.VITE_BACKEND_API_URI}/users/${authID.id}`, {
       credentials: "include",
     })
       .then((response) => {

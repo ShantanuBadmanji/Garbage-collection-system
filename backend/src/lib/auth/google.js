@@ -18,7 +18,7 @@ const googleVerify = async (req, accessT, refreshT, profile, done) => {
 
     result.length == 0 && (await postUser(email, name));
 
-    return done(null, { id: email, name });
+    return done(null, { id: email, role: "user" });
   } catch (error) {
     return done(error, null);
   }
@@ -49,18 +49,9 @@ router.get(
 router.get(
   "/callback",
   passport.authenticate("google", {
-    successRedirect: "/api/auth/google/success",
-    failureRedirect: "/api/auth/google/failure",
+    successRedirect: "/api/auth/success",
+    failureRedirect: "/api/auth/failure",
   })
 );
-router.get("/success", (req, res, next) => {
-  const user = req.user;
-  res.redirect(process.env.FRONTEND_URL + "/auth/login/success");
-  // res.status(201).json({ message: "authenticated successfully", user });
-});
-
-router.get("/failure", (req, res, next) => {
-  res.status(401).send({ message: "authentication unsucessful" });
-});
 
 export default router;

@@ -6,7 +6,7 @@ const AuthContext = createContext();
 function AuthProvider({ children }) {
   const [authID, setAuthID] = useState(null);
 
-  const login = (userID) => setAuthID(userID);
+  const login = (user) => setAuthID({ id: user.id, role: user.role });
   const logout = () => setAuthID(null);
 
   return (
@@ -16,4 +16,4 @@ function AuthProvider({ children }) {
   );
 }
 
-export { AuthContext, AuthProvider};
+export { AuthContext, AuthProvider };

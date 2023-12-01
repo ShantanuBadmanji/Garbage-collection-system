@@ -3,10 +3,16 @@
 const InputRadioButtons = ({ wasteTypes, fieldName }) => {
   return (
     <>
-      {wasteTypes.map(({ id, name }, index) => (
+      {wasteTypes.map(({ id, type_name }, index) => (
         <label key={index}>
-          <input type="radio" name={fieldName} id={name} value={id} required />
-          {name}
+          <input
+            type="radio"
+            name={fieldName}
+            id={type_name}
+            value={id}
+            required
+          />
+          {type_name}
         </label>
       ))}
     </>

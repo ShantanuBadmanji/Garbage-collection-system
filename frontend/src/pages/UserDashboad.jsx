@@ -1,13 +1,16 @@
 import InputFiles from "../components/Form/InputFiles";
 import InputRadioButtons from "../components/Form/InputRadioButtons";
 import useProfile from "../hooks/useProfile";
+import customFetch from "../utils/custom-fetch";
 import getUserLocation from "../utils/get-user-location";
 import uploadImagesCloudinary from "../utils/upload-image-cloudinary";
 
 const wasteTypes = [
-  { name: "HouseWaste", id: 2001 },
-  { name: "EWaste", id: 2002 },
-  { name: "Greenwaste", id: 2003 },
+  { id: 81, type_name: "e-waste" },
+  { id: 82, type_name: "bio-waste" },
+  { id: 83, type_name: "bio-medical" },
+  { id: 84, type_name: "construction-waste" },
+  { id: 85, type_name: "hazardous-waste" },
 ];
 
 const UserDashboad = () => {
@@ -16,25 +19,21 @@ const UserDashboad = () => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.target);
-    const wasteType = data.get("wasteType");
+    const wasteType = +data.get("wasteType");
     const files = data.getAll("images");
     try {
       const location = await getUserLocation();
       const fileURLsArray = await uploadImagesCloudinary(files);
 
       const payload = { wasteType, location, beforeImage: fileURLsArray };
-      const options = {
+      const moreOptions = {
         method: "POST",
-        credentials: "include",
         body: JSON.stringify(payload),
-        headers: { "Content-Type": "application/json" },
       };
-      const response = await (
-        await fetch(
-          `${import.meta.env.VITE_BACKEND_API_URI}/complaints`,
-          options
-        )
-      ).json();
+      const response = await customFetch(
+        `${import.meta.env.VITE_BACKEND_API_URI}/complaints`,
+        moreOptions
+      );
 
       console.log("fetch response: ", response);
     } catch (error) {

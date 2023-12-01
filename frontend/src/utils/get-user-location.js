@@ -8,7 +8,7 @@ const getUserCoordinatesPromise = () => {
   });
 };
 
-const getAddressPromise = async ({ latitude, longitude }) => {
+const getAddressPromise = async (latitude, longitude) => {
   const getAddress = () => {
     return new Promise((resolve, reject) => {
       fetch(`https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}`)
@@ -23,12 +23,13 @@ const getAddressPromise = async ({ latitude, longitude }) => {
 
 const getUserLocation = async () => {
   const coords = await getUserCoordinatesPromise();
-  const res = await getAddressPromise(coords);
+  const res = await getAddressPromise(coords.latitude, coords.longitude);
 
   const location = {
-    ...coords,
+    latitude: res.lat,
+    longitude: res.lon,
     displayAddress: res.display_name,
-    city: res.address?.city,
+    city: res.address?.county,
   };
   console.log(res);
   return location;

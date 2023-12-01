@@ -10,9 +10,10 @@ import Login from "./pages/auth/Login";
 import Complaints from "./pages/Complaints";
 import Complaint from "./pages/Complaint";
 import FileNewComplaint from "./pages/FileNewComplaint";
-import CollectorDashboard from "./pages/CollectorDashboard";
+
 import UserAuthorization from "./pages/auth/UserAuthorization";
 import GoogleLoginSuccess from "./pages/auth/GoogleLoginSuccess";
+import EmployeeDashboard from "./pages/EmployeeDashboad";
 
 function App() {
   return (
@@ -29,11 +30,8 @@ function App() {
             </UserAuthorization>
           }
         />
-        <Route
-          path="/collector/:collectorId/dashboard"
-          element={<CollectorDashboard />}
-        />
-        <Route path="/admins/:adminId/dashboard" element={<AdminDashboard />} />
+        <Route path="/employees/dashboard" element={<EmployeeDashboard />} />
+        <Route path="/admins/dashboard" element={<AdminDashboard />} />
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/login/success" element={<GoogleLoginSuccess />} />
         <Route path="/complaints" element={<Complaints />} />

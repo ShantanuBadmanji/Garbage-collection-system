@@ -5,14 +5,14 @@ import {
   getComplaintById,
   getComplaints,
   postComplaint,
+  patchComplaintById,
 } from "../db/query/complaint-query.js";
 
 const router = Router();
 
-// router.all("/", (req, res, next) => next());
 router.get("/", async (req, res, next) => {
   try {
-    const [result] = await getComplaints();
+    const [result] = await getComplaints({ ...req.user });
     res.status(200).json(result);
   } catch (error) {
     next(error);
@@ -20,17 +20,17 @@ router.get("/", async (req, res, next) => {
 });
 router.post("/", async (req, res, next) => {
   console.log(req.body);
-  return res.json({ response: "response recieved" });
+  const userId = req.user.id;
+  const body = { ...req.body };
   try {
     const complaintId = crypto.randomUUID();
-    await postComplaint({ ...req.body, complaintId }, next);
+    await postComplaint({ ...body, complaintId, userId }, next);
     res.status(200).json({
       message: "complaint submitted successfully.",
       data: { complaintId },
     });
   } catch (error) {
-    error.status = 400;
-    next(error);
+    res.status(500).json(error);
   }
 });
 
@@ -43,6 +43,16 @@ router.get("/:complaintId", async (req, res, next) => {
     res.status(200).json(resultedComplaint);
   } catch (error) {
     next(error);
+  }
+});
+router.patch("/:complaintId", async (req, res, next) => {
+  const { complaintId } = req.params;
+  console.log(req.body);
+  try {
+    const [[resultedComplaint]] = await patchComplaintById({ ...req.body });
+    res.status(200).json(resultedComplaint);
+  } catch (error) {
+    res.status(500).json(error);
   }
 });
 router.delete("/:complaintId", async (req, res, next) => {
@@ -58,11 +68,5 @@ router.delete("/:complaintId", async (req, res, next) => {
     next(error);
   }
 });
-
-// router
-//   .route("/")
-//   .all((req, res, next) => next())
-//   .get(getAllComplaints)
-//   .post(postComplaint);
 
 export default router;
