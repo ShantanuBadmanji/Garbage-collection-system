@@ -5,7 +5,11 @@ function Footer() {
     console.log("footer");
   });
 
-  return <h1>Footer</h1>;
+  return (
+    <footer style={{ backgroundColor: "blue" }}>
+      <h1>Footer</h1>;
+    </footer>
+  );
 }
 
 export default Footer;

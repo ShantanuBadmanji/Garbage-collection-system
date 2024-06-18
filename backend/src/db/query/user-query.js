@@ -7,12 +7,12 @@ const getUsers = async () => {
 };
 
 const getUserById = async (userId) => {
-  const query = "SELECT * FROM USER WHERE id = ?";
+  const query = "SELECT * FROM USER WHERE username = ?";
   return await db.execute(query, [userId]);
 };
 
 const postUser = async (id, name = null, password = null) => {
-  const query = "INSERT INTO USER (id,name,password) VALUES (?,?,?);";
+  const query = "INSERT INTO USER (username,name,password) VALUES (?,?,?);";
   const result = await db.execute(query, [id, name, password]);
   console.log("ok: ", result);
 };

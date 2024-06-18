@@ -13,12 +13,12 @@ const googleOptions = {
 const googleVerify = async (req, accessT, refreshT, profile, done) => {
   try {
     console.log("profile", profile._json);
-    const { id, displayName: name } = profile;
-    const [result] = await getUserById(id);
+    const { id, displayName: name, email } = profile;
+    const [result] = await getUserById(email);
 
-    result.length == 0 && (await postUser(id, name));
+    result.length == 0 && (await postUser(email, name));
 
-    return done(null, { id, name });
+    return done(null, { id: email, role: "user" });
   } catch (error) {
     return done(error, null);
   }
@@ -42,24 +42,16 @@ passport.deserializeUser(function (user, cb) {
 
 const router = Router();
 router.get(
-  "/google",
+  "/",
   passport.authenticate("google", { scope: ["email", "profile"] })
 );
 
 router.get(
-  "/google/callback",
+  "/callback",
   passport.authenticate("google", {
-    successRedirect: "/google/success",
-    failureRedirect: "/google/failure",
+    successRedirect: "/api/auth/success",
+    failureRedirect: "/api/auth/failure",
   })
 );
-router.get("/google/success", (req, res, next) => {
-  const user = req.user;
-  res.status(201).json({ message: "authenticated successfully", user });
-});
-
-router.get("/google/failure", (req, res, next) => {
-  res.status(401).send({ message: "authentication unsucessful" });
-});
 
 export default router;

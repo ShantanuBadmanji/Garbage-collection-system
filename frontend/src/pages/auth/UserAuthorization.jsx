@@ -1,10 +1,9 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import useAuthId from "../../hooks/useAuthId";
 
 function UserAuthorization({ children }) {
-  const [isUser, setIsUser] = useState(true);
-    useEffect(() => setIsUser((p) => !p), []);
-  if (isUser) {
+  const { authID } = useAuthId();
+  if (authID) {
     return <div>{children}</div>;
   } else {
     return <h1>un-authorised</h1>;
